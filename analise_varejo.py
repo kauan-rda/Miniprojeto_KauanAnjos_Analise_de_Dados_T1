@@ -23,21 +23,34 @@ if 'Data' in df.columns:
 # ==========================================
 
 print("\n--- SPRINT 3: Limpeza de Dados ---")
-# 1. Identificar problemas
-print("Valores nulos por coluna (Antes):")
-print(df.isnull().sum())
-print(f"Duplicatas encontradas: {df.duplicated().sum()}")
+linhas_antes = df.shape[0]
 
-# 2. Tratamento de Nulos
-# Preenchendo categorias vazias com 'Sem Categoria' (Critério de Avaliação 4)
-if 'Categoria' in df.columns:
-    df['Categoria'] = df['Categoria'].fillna('Sem Categoria')
+# O criador da base notou que há textos "#N/D" no lugar de vazios. Vamos converter para nulo real (NaN)
+df[['PR_CAT', 'PR_NOME']] = df[['PR_CAT', 'PR_NOME']].replace("#N/D", np.nan)
 
-# Tratando outras colunas numéricas (exemplo: dimensões/valores) preenchendo com 0 ou mediana
-# Justificativa: Preservar as linhas para não perder dados de clientes/datas válidas.
-if 'Valor' in df.columns:
-    df['Valor'] = df['Valor'].fillna(df['Valor'].median())
+# Removendo as linhas onde a categoria ou nome do produto estão nulos
+df = df.dropna(subset=['PR_CAT', 'PR_NOME'])
 
-# 3. Tratamento de Duplicatas
+# Removendo duplicatas exatas
 df = df.drop_duplicates()
-print("\nDuplicatas removidas e valores nulos tratados.")
+
+linhas_depois = df.shape[0]
+print(f"Limpeza concluída. Linhas removidas (nulos e duplicatas): {linhas_antes - linhas_depois}")
+
+# ==========================================
+
+print("\n--- SPRINT 4: Estatísticas da coluna CL_FHL (Número de Filhos) ---")
+
+# O describe() já traz quase tudo
+estatisticas = df['CL_FHL'].describe()
+moda = df['CL_FHL'].mode()[0]
+
+print(f"Total de registros válidos: {estatisticas['count']}")
+print(f"Média de filhos: {estatisticas['mean']:.2f}")
+print(f"Mediana: {estatisticas['50%']}")
+print(f"Desvio Padrão: {estatisticas['std']:.2f}")
+print(f"Moda (Mais comum): {moda}")
+print(f"Mínimo de filhos: {estatisticas['min']}")
+print(f"Máximo de filhos: {estatisticas['max']}")
+    print(f"1º Quartil (25%): {estatisticas['25%']}")
+    print(f"3º Quartil (75%): {estatisticas['75%']}")
