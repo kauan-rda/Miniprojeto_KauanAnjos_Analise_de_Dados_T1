@@ -11,3 +11,10 @@ print(f"Número de atributos (colunas): {df.shape[1]}")
 # Mostrando os tipos de dados
 print("\nTipos de dados:")
 print(df.dtypes)
+
+
+print("\n--- SPRINT 2: Tratamento de Tipos ---")
+# Convertendo a coluna de Data para datetime
+if 'Data' in df.columns:
+    df['Data'] = pd.to_datetime(df['Data'], errors='coerce')
+    print("Coluna 'Data' convertida para datetime com sucesso.")
