@@ -88,6 +88,9 @@ CO_ID | Nulo | Remover linha | Sem nº da nota fiscal, perdi rastreamento
 Todas | #N/D | Converter para NaN | Artefato de exportação do Excel
 Todas | 100% iguais | Remover | Erro de importação, não dado real
 
+*O critério de tratamento de nulos e condicionais fala sobre uso de if/else, então equivalente com if/else (para fins didáticos):
+df['PR_CAT'] = df['PR_CAT'].apply(lambda x: 'Sem Categoria' if pd.isna(x) else x)*
+
 Principais Insights
 
 1. Qualidade dos dados: a base contém resíduos de exportação (#N/D).
@@ -96,5 +99,8 @@ Principais Insights
 4. Concentração de vendas: as top 5 categorias concentram o maior volume.
 5. Segmentação: diferenças entre segmentos A, B e C indicam comportamentos distintos.
 
-Observação: se os commits estiverem estranhos é porquê uma parte eu fiz pelo computador e depois tive que finalizar pelo celular.
+Observações
+
+Não fiz em ambiente virtual isolado, não criei o requirements.txt;
+Se os commits estiverem estranhos é porquê uma parte eu fiz pelo computador e depois tive que finalizar pelo celular.
 
